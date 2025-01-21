@@ -33,11 +33,10 @@ npm install
 3. Create a `.env` file in the root directory with the following variables:
 ```env
 PORT=8000
-MONGODB_URI=your_mongodb_atlas_connection_string
+DATABASE_URL =your_mongodb_atlas_connection_string
 JWT_SECRET=your_jwt_secret_key
-EMAIL_SERVICE=your_email_service
-EMAIL_USER=your_email_username
-EMAIL_PASSWORD=your_email_password
+MAILER_EMAIL=your_email_service
+MAILER_PASSWORD=your_email_password
 ```
 
 ## Database Configuration
@@ -47,26 +46,26 @@ This project uses MongoDB Atlas as the database. To configure:
 1. Create a MongoDB Atlas account
 2. Create a new cluster
 3. Get your connection string
-4. Replace the MONGODB_URI in `.env` file with your connection string
+4. Replace the DATABASE_URL in `.env` file with your connection string
 
 ## API Endpoints
 
 ### Authentication
 
-- **POST /api/auth/register**
+- **POST /api/v1/auth/register**
   - Register a new user
   - Body: `{ "email": "user@example.com", "password": "password123", "username": "username" }`
 
-- **POST /api/auth/login**
+- **POST /api/v1/auth/login**
   - Login user
   - Body: `{ "email": "user@example.com", "password": "password123" }`
   - Returns: JWT token
 
-- **POST /api/auth/request-reset**
+- **POST /api/v1/auth/request-reset**
   - Request password reset
   - Body: `{ "email": "user@example.com" }`
 
-- **POST /api/auth/reset-password**
+- **POST /api/v1/auth/reset-password**
   - Reset password using token
   - Body: `{ "token": "reset_token", "newPassword": "newpassword123" }`
 
@@ -95,14 +94,14 @@ All todo endpoints require authentication (JWT token in Authorization header)
 
 ### Email Validation
 - Must be a valid email format
-- Regex pattern: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+- Regex pattern: `/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/`
 
 ### Password Validation
 - Minimum 8 characters
 - Must contain at least one uppercase letter
 - Must contain at least one lowercase letter
 - Must contain at least one number
-- Regex pattern: `/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/`
+- Regex pattern: `/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,16}$/`
 
 ## Error Handling
 
